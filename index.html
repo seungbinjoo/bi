@@ -195,40 +195,27 @@
       <div class="column is-full-width">
         <h2 class="title is-3">Motivation</h2>
 
-        <!-- Interpolating. -->
-        <h3 class="title is-4">Interpolating states</h3>
-        <div class="content has-text-justified">
-          <p>
-            We wish to solve the problem of blind grasping for robotic manipulators by formulating it as a Partially Observable Markov Decision Process (POMDP).
-            This involves applying planning algorithms on the belief, i.e. the probability distribution over the true states.
-          </p>
-          <p>
-            The belief update in such continuous state spaces with long horizons and sparse observations is challenging. Thus, our objective is to construct a model \( G \) which can learn the belief dynamics (i.e. next belief from current belief, action, observation):
-            \( b' = G(b, a, o) \)
-          </p>
-        </div>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_start.jpg"
-                 class="interpolation-image"
-                 alt="Interpolate start reference image."/>
-            <p>Start Frame</p>
+        <!-- Motivation. -->
+        <div class="columns">
+          <!-- Left Column: Text Content -->
+          <div class="column is-half">
+            <p>
+              We wish to solve the problem of blind grasping for robotic manipulators by formulating it as a Partially Observable Markov Decision Process (POMDP).
+              This involves applying planning algorithms on the belief, i.e. the probability distribution over the true states.
+            </p>
+            <p>
+              The belief update in such continuous state spaces with long horizons and sparse observations is challenging. Thus, our objective is to construct a model \( G \) which can learn the belief dynamics (i.e. next belief from current belief, action, observation):
+              \( b' = G(b, a, o) \)
+            </p>
           </div>
-          <div class="column interpolation-video-column">
-            <div id="interpolation-image-wrapper">
-              Loading...
-            </div>
-            <input class="slider is-fullwidth is-large is-info"
-                   id="interpolation-slider"
-                   step="1" min="0" max="100" value="0" type="range">
-          </div>
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_end.jpg"
-                 class="interpolation-image"
-                 alt="Interpolation end reference image."/>
-            <p class="is-bold">End Frame</p>
+          <!-- Right Column: Image -->
+          <div class="column is-half">
+            <figure class="image is-4by3">
+              <img src="static/images/Picture1.png" alt="Descriptive text">
+            </figure>
           </div>
         </div>
+        
         <br/>
         <!--/ Interpolating. -->
 
