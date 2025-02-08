@@ -173,9 +173,10 @@
             We present a learnable method for object state estimation in blind and contact-rich robotic manipulation settings.
           </p>
           <p>
-            Our approach represents the belief as a weighted particle set, and utilizes differentiable particle filters (DPFs).
+            Our approach represents the belief as a weighted particle set, and utilizes differentiable particle filters (DPFs), i.e., a differentiable version of the classic particle filter.
             By learning particle proposer and observation likelihood estimator models, we show that blind manipulators can localize objects.
-            We incorporate a "negative proposing" algorithm to improve the performance of DPFs and account for sparse contact observations.
+            We learn the measurement update models through supervised learning on a dataset consisting of robot histories.
+            Our results show that incorporating a "negative proposing" algorithm helps in improving the performance of DPFs and accounting for sparse contact observations.
           </p>
         </div>
       </div>
