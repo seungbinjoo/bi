@@ -132,26 +132,15 @@
 <section class="hero is-light is-small">
   <div class="hero-body">
     <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-steve">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="static/images/rma1.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-chair-tp">
-          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="static/images/rma1.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-shiba">
-          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
-            <source src="static/images/rma1.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
+      <!-- Video Section -->
+      <video autoplay loop muted>
+        <source src="static/videos/rma1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <video autoplay loop muted>
+        <source src="static/videos/rma2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
   </div>
 </section>
@@ -165,13 +154,14 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            We present a learnable method for object state estimation in blind and contact-rich robotic manipulation settings.
+            Generalisable robotic manipulation is a key challenge in robot learning. For robots to be successfully deployed to diverse real-life manipulation scenarios, they must adapt to variations in object mass, shape, friction coefficient, and external disturbance forces on the robot.
+            We present Rapid Motor Adaptation for Robot Manipulator Arms (RMA<sup>2</sup>) to solve this problem.
+            RMA<sup>2</sup> trains a reinforcement learning (RL) policy with high amounts of domain randomisation, and subsequently learns an adaptation module that infers privileged information about the environment during deployment using the robot’s past dynamic behaviour and depth images. This allows the robot to specifically adapt to different situations despite lacking direct knowledge of environment parameters such as object mass and friction.
           </p>
           <p>
-            Our approach represents the belief as a weighted particle set, and utilizes differentiable particle filters (DPFs), i.e., a differentiable version of the classic particle filter.
-            By learning particle proposer and observation likelihood estimator models, we show that blind manipulators can localize objects.
-            We learn the measurement update models through supervised learning on a dataset consisting of robot histories.
-            Our results show that incorporating a "negative proposing" algorithm helps in improving the performance of DPFs and accounting for sparse contact observations.
+            While RMA<sup>2</sup> demonstrates generalisable dextrous manipulation, it lacks in terms of imbuing robots with a semantic understanding of the objects being manipulated.
+            Thus, we aim to extend our RL work on robotic manipulation by integrating the notion of semantics into the underlying manipulation tasks. We take inspiration from RL-VLM-F and incorporate vision-language model feedback.
+            By integrating semantic priors into RMA<sup>2</sup>, we aim to explore language-conditioned RL policies which exhibit the ability to generalise to variations in both environment parameters and semantic attributes such as object colour, shape, and category.
           </p>
         </div>
       </div>
@@ -182,46 +172,20 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <!-- Motivation. -->
-    <div class="columns is-centered">
-      <div class="column">
-        <h2 class="title is-3">Motivation</h2>
-        <div class="content has-text-justified">
-          <p>
-            We wish to solve the problem of blind grasping for robotic manipulators by formulating it as a Partially Observable Markov Decision Process (POMDP).
-            This involves applying planning algorithms on the belief, i.e. the probability distribution over the true states.
-          </p>
-          <p>
-            The belief update in such continuous state spaces with long horizons and sparse observations is challenging. Thus, our objective is to construct a model \( G \) which can learn the belief dynamics (i.e. next belief from current belief, action, observation):
-            \( b' = G(b, a, o) \)
-          </p>
-        </div>
-        <div class="is-flex is-justify-content-center">
-          <figure class="image">
-            <img src="static/images/Picture1.png" alt="Descriptive text" style="max-height: 300px; width: auto;">
-          </figure>
-        </div>
-      </div>
-    </div>
-    <!--/ Motivation. -->
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop">
     <!-- Method. -->
     <div class="columns is-centered">
       <div class="column">
-        <h2 class="title is-3">Method</h2>
+        <h2 class="title is-3">RMA<sup>2</sup></h2>
         <div class="content has-text-justified">
           <p>
-            For a \(d\)-dimensional state space, the belief at time \(t\) is represented as a set of \(n\) particles \(S_t\) and its corresponding weights \(w_t\).
-            We use differentiable particle filters (DPFs) with an additional negative proposing algorithm for timesteps when there is an absence of contact observations.
+            RMA<sup>2</sup> involves 3 stages. First, we train a robust base policy conditioned on privileged environment parameters.
+            Secondly, the adaptation module predicts the privileged environment parameters using proprioceptive history and depth information. The adaptation module is learned by regressing to the ground truth environment information produced by the base policy.
+            Lastly, during evaluation, we take the trained base policy and adapter for real-life deployment.
           </p>
         </div>
         <div class="is-flex is-justify-content-center">
           <figure class="image">
-            <img src="static/images/method.png" alt="Descriptive text" style="max-height: 1000px; width: auto;">
+            <img src="static/images/RMA Diagram.png" alt="Descriptive text" style="max-height: 1000px; width: auto;">
           </figure>
         </div>
       </div>
@@ -235,23 +199,11 @@
     <!-- Learning. -->
     <div class="columns is-centered">
       <div class="column">
-        <h2 class="title is-3">Learning the DPF</h2>
+        <h2 class="title is-3">VLM Feedback</h2>
         <div class="content has-text-justified">
           <p>
-            We learn the differentiable particle filter (DPF) by treating it as a supervised learning problem.
-            For the particle proposer \(k_\theta\), from a dataset consisting of [state, action, observation] trajectories, we maximise the belief at the ground truth object state.
-            Since our belief is represented as a particle set, we approximate the continuous belief by forming a Gaussian Mixture Model, where each particle \(q_t^{[i]}\)  is a Gaussian scaled by its weight \(w_t^{[i]}\):
-            \(\theta_{k}^{*} = argmin_{\theta_{k}} -log E_t[b(q_o;\theta_{k})]\)
+            Work in progress.
           </p>
-          <p>
-            We learn the observation likelihood estimator \(l_{\theta}\) by maximising log-likelihood of observations in the true object state, and minimising it in all other states:
-            \(\theta_{l}^{*} = argmin_{\theta_{l}} -log E_t[l_{\theta}(o_t,s_{t}^{*})] -log E_{t_1, t_2}[1 - l_{\theta}(o_{t_1},s_{t_2}^{*})]\)
-          </p>
-        </div>
-        <div class="is-flex is-justify-content-center">
-          <figure class="image">
-            <img src="static/images/gmm3.png" alt="Descriptive text" style="max-height: 300px; width: auto;">
-          </figure>
         </div>
       </div>
     </div>
@@ -267,42 +219,12 @@
         <h2 class="title is-3">Results</h2>
         <div class="content has-text-justified">
           <p>
-            We test the DPF for blind grasping, by performing the belief update loop on robot trajectories, and measuring the mean squared error (MSE) between the ground truth object pose and the mean particle of the final-timestep belief.
-            Results show that DPF with negative proposing (NP) pipeline paired with optimally generated trajectories outperforms standard DPFs. Click images below to enlarge.
+            Work in progress.
           </p>
         </div>
       </div>
     </div>
     <!--/ Results. -->
-
-    <section class="hero is-light is-small">
-      <div class="hero-body">
-        <div class="container">
-          <div id="results-carousel" class="carousel results-carousel">
-            <div class="item item-steve">
-              <a href="static/images/r2.png" data-lightbox="carousel" data-title="Item 1">
-                <img src="static/images/r2.png" alt="Item 1">
-              </a>
-            </div>
-            <div class="item item-chair-tp">
-              <a href="static/images/r4.png" data-lightbox="carousel" data-title="Item 2">
-                <img src="static/images/r4.png" alt="Item 2">
-              </a>
-            </div>
-            <div class="item item-shiba">
-              <a href="static/images/r6.png" data-lightbox="carousel" data-title="Item 3">
-                <img src="static/images/r6.png" alt="Item 3">
-              </a>
-            </div>
-            <div class="item item-fullbody">
-              <a href="static/images/r8.png" data-lightbox="carousel" data-title="Item 4">
-                <img src="static/images/r8.png" alt="Item 4">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </section>
 
