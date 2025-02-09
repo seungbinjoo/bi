@@ -186,107 +186,129 @@
   </div>
 </section>
 
-
 <section class="section">
   <div class="container is-max-desktop">
-
-    <!-- Animation. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Motivation</h2>
-
-        <!-- Motivation. -->
-        <div class="columns">
-          <!-- Left Column: Text Content -->
-          <div class="column is-half">
-          <div class="content has-text-justified">
-            <p>
-              We wish to solve the problem of blind grasping for robotic manipulators by formulating it as a Partially Observable Markov Decision Process (POMDP).
-              This involves applying planning algorithms on the belief, i.e. the probability distribution over the true states.
-            </p>
-            <p>
-              The belief update in such continuous state spaces with long horizons and sparse observations is challenging. Thus, our objective is to construct a model \( G \) which can learn the belief dynamics (i.e. next belief from current belief, action, observation):
-              \( b' = G(b, a, o) \)
-            </p>
-          </div>
-          </div>
-          <!-- Right Column: Image -->
-          <div class="column is-half">
-            <figure class="image is-4by3">
-              <img src="static/images/Picture1.png" alt="Descriptive text" style="max-height: 600px; width: auto;">
-            </figure>
-          </div>
-        </div>
-        
-        <br/>
-        <!--/ Interpolating. -->
-
-        <!-- Re-rendering. -->
-        <h2 class="title is-4">Problem Formulation</h2>
-        <div class="content has-text-justified">
-          <p>
-            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
-            viewpoint such as a stabilized camera by playing back the training deformations.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <video id="replay-video"
-                 controls
-                 muted
-                 preload
-                 playsinline
-                 width="75%">
-            <source src="./static/videos/replay.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <!--/ Re-rendering. -->
-
-      </div>
-    </div>
-    <!--/ Animation. -->
-
-
-    <!-- Concurrent Work. -->
+    <!-- Motivation. -->
     <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-
+      <div class="column">
+        <h2 class="title is-3">Motivation</h2>
         <div class="content has-text-justified">
           <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
+            We wish to solve the problem of blind grasping for robotic manipulators by formulating it as a Partially Observable Markov Decision Process (POMDP).
+            This involves applying planning algorithms on the belief, i.e. the probability distribution over the true states.
           </p>
           <p>
-            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
+            The belief update in such continuous state spaces with long horizons and sparse observations is challenging. Thus, our objective is to construct a model \( G \) which can learn the belief dynamics (i.e. next belief from current belief, action, observation):
+            \( b' = G(b, a, o) \)
           </p>
-          <p>
-            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
-            both use deformation fields to model non-rigid scenes.
-          </p>
-          <p>
-            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
-          </p>
-          <p>
-            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
-          </p>
+        </div>
+        <div class="is-flex is-justify-content-center">
+          <figure class="image">
+            <img src="static/images/Picture1.png" alt="Descriptive text" style="max-height: 300px; width: auto;">
+          </figure>
         </div>
       </div>
     </div>
-    <!--/ Concurrent Work. -->
-
+    <!--/ Motivation. -->
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Method. -->
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            For a \(d\)-dimensional state space, the belief at time \(t\) is represented as a set of \(n\) particles \(S_t\) and its corresponding weights \(w_t\).
+            We use differentiable particle filters (DPFs) with an additional negative proposing algorithm for timesteps when there is an absence of contact observations.
+          </p>
+        </div>
+        <div class="is-flex is-justify-content-center">
+          <figure class="image">
+            <img src="static/images/method.png" alt="Descriptive text" style="max-height: 1000px; width: auto;">
+          </figure>
+        </div>
+      </div>
+    </div>
+    <!--/ Method. -->
+  </div>
+</section>
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{park2021nerfies,
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
-}</code></pre>
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Learning. -->
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3">Learning the DPF</h2>
+        <div class="content has-text-justified">
+          <p>
+            We learn the differentiable particle filter (DPF) by treating it as a supervised learning problem.
+            For the particle proposer \(k_\theta\), from a dataset consisting of [state, action, observation] trajectories, we maximise the belief at the ground truth object state.
+            Since our belief is represented as a particle set, we approximate the continuous belief by forming a Gaussian Mixture Model, where each particle \(q_t^{[i]}\)  is a Gaussian scaled by its weight \(w_t^{[i]}\):
+            \(\theta_{k}^{*} = argmin_{\theta_{k}} -log E_t[b(q_o;\theta_{k})]\)
+          </p>
+          <p>
+            We learn the observation likelihood estimator \(l_{\theta}\) by maximising log-likelihood of observations in the true object state, and minimising it in all other states:
+            \(\theta_{l}^{*} = argmin_{\theta_{l}} -log E_t[l_{\theta}(o_t,s_{t}^{*})] -log E_{t_1, t_2}[1 - l_{\theta}(o_{t_1},s_{t_2}^{*})]\)
+          </p>
+        </div>
+        <div class="is-flex is-justify-content-center">
+          <figure class="image">
+            <img src="static/images/gmm3.png" alt="Descriptive text" style="max-height: 300px; width: auto;">
+          </figure>
+        </div>
+      </div>
+    </div>
+    <!--/ Learning. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            We test the DPF for blind grasping, by performing the belief update loop on robot trajectories, and measuring the mean squared error (MSE) between the ground truth object pose and the mean particle of the final-timestep belief.
+            Results show that DPF with negative proposing (NP) pipeline paired with optimally generated trajectories outperforms standard DPFs.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Results. -->
+
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item item-steve">
+              <a href="static/images/r2.png" data-lightbox="carousel" data-title="Item 1">
+                <img src="static/images/r2.png" alt="Item 1">
+              </a>
+            </div>
+            <div class="item item-chair-tp">
+              <a href="static/images/r4.png" data-lightbox="carousel" data-title="Item 2">
+                <img src="static/images/r4.png" alt="Item 2">
+              </a>
+            </div>
+            <div class="item item-shiba">
+              <a href="static/images/r6.png" data-lightbox="carousel" data-title="Item 3">
+                <img src="static/images/r6.png" alt="Item 3">
+              </a>
+            </div>
+            <div class="item item-fullbody">
+              <a href="static/images/r8.png" data-lightbox="carousel" data-title="Item 4">
+                <img src="static/images/r8.png" alt="Item 4">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 
