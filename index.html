@@ -202,9 +202,13 @@
         <h2 class="title is-3">VLM Feedback</h2>
         <div class="content has-text-justified">
           <p>
-            Work in progress.
+            We utilize Reinforcement Learning with Vision-Language Model Feedback (RL-VLM-F) to automatically learn rewards based on a natural language task description. This involves training a policy and using the policy to collect rollout trajectories. Then, two observations are sampled and a VLM is queried to produce a preference label based on the task description. We use the preference label to learn the reward model. We also integrate RMA into the RL-VLM-F pipeline to give bimanual robots dextrous and adaptable manipulation capabilities.
           </p>
         </div>
+        <div class="is-flex is-justify-content-center">
+          <figure class="image">
+            <img src="static/images/RL_VLM_F.png" alt="Descriptive text" style="max-height: 1000px; width: auto;">
+          </figure>
       </div>
     </div>
     <!--/ Learning. -->
